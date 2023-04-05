@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class Server {
 
     public final static String REGISTER_COMMAND = "INSCRIRE";
@@ -91,7 +92,28 @@ public class Server {
      @param arg la session pour laquelle on veut récupérer la liste des cours
      */
     public void handleLoadCourses(String arg) {
-        // TODO: implémenter cette méthode
+        try {
+            Scanner s = new Scanner (new File("cours.txt"));
+            ArrayList<String> classes = new ArrayList<>();
+            
+            while (s.hasNext()) {
+                classes.addAll(Arrays.asList(scan.nextLine().split("\t")));                                
+            }
+            
+            ArrayList<String> course = new ArrayList<>();
+            
+            for (int i = 0; i < classes.size(); i++){
+                if (classes[i][2] == arg) {
+                    course.add(classes[i]);
+                }
+            }
+            
+            objectOutputStream.writeObject(course);
+            socket.close();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -100,7 +122,9 @@ public class Server {
      La méthode gére les exceptions si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
-        // TODO: implémenter cette méthode
+        List<String> input = objectInputStream.readObject(); //Ceci est supposé de lire RegistrationForm
+        //TODO            
+        
     }
 }
 
